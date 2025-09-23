@@ -1,0 +1,10 @@
+//Longest Pipeline Runs in DataFactory
+SynapseIntegrationPipelineRuns 
+| where Start >= ago(2d) //Adjust here as per your requirement
+| where Status in ("Failed", "InProgress", "Succeeded") 
+| extend RunDuration = coalesce(End, now()) - Start 
+| extend RunDurationHHMM = strcat( tostring(floor(datetime_diff('second', coalesce(End, now()), Start) / 3600, 1)), "h ", tostring(floor((datetime_diff('second', coalesce(End, now()), Start) % 3600) / 60, 1)), "m" ) 
+| project PipelineName, Status, Start, End, RunDurationHHMM, RunDuration 
+| order by RunDuration desc
+
+

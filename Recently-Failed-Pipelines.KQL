@@ -1,0 +1,6 @@
+//This gives you the pipelines that are failed recently (adjust auto refresh for near realtime Monitoring)
+SynapseIntegrationPipelineRuns 
+| where Start >= ago(1d) //Adjust here as per your requirement
+| where Status == "Failed" 
+| summarize FailCount = count(), LastFailed = max(Start) by PipelineName, Status 
+| order by LastFailed desc

@@ -1,0 +1,12 @@
+// This Query gives longer Execution time on Database - Dev ( last 7 days)
+SynapseIntegrationActivityRuns
+| where TimeGenerated >= ago(1d) //Adjust here as per your requirement
+| where Status in ("Failed", "InProgress", "Succeeded")
+| where ActivityType in ("Copy", "DataFlow", "SqlServerStoredProcedure", "SqlPoolStoredProcedure", "GetMetadata", "Lookup", "Script")
+| extend RunDuration = coalesce(End, now()) - Start
+| extend RunDurationHHMM = strcat(
+        tostring(floor(datetime_diff('second', coalesce(End, now()), Start) / 3600, 1)), "h ",
+        tostring(floor((datetime_diff('second', coalesce(End, now()), Start) % 3600) / 60, 1)), "m"
+    )
+| project PipelineName, ActivityType, ActivityName,  RunDuration, RunDurationHHMM, Status, Start, End
+| order by RunDuration desc
