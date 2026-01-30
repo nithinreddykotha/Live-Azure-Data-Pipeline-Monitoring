@@ -1,4 +1,4 @@
-# Live-Azure-Data-Pipeline-Monitoring using Log Analytics Workspace 💠
+# Azure ETL Pipeline Monitoring using Log Analytics Workspace 💠
 
 🔹This project contains Azure portal dashboards backed by KQL queries that read from Log Analytics workspaces to visualize Azure Pipelines and database execution metrics.
 
